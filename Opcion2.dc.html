@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Osly · Opción 2</title>
 <script src="./vendor/react.js"></script>
 <script src="./vendor/react-dom.js"></script>
@@ -10,157 +11,414 @@
 <body>
 <x-dc>
 <helmet>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&amp;family=Figtree:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&amp;family=Figtree:wght@400;600;700&amp;display=swap" rel="stylesheet">
 <style>
-body{margin:0}
-.a{font-family:Figtree,system-ui,sans-serif;background:#0d0d0d;color:#f5f5f5}
+body{margin:0;scroll-behavior:smooth}
+.a{font-family:Figtree,system-ui,sans-serif;background:#0d0d0d;color:#f5f5f5;min-height:100vh}
 .w{max-width:1100px;margin:0 auto;padding:0 24px}
-.a h1,.a h2,.a h3{font-family:Fredoka,system-ui,sans-serif;font-weight:700;margin:0;line-height:1.02}
-.b{display:inline-flex;align-items:center;min-height:48px;padding:0 28px;border-radius:999px;background:#FDC62B;color:#0d0d0d;font-weight:700;text-decoration:none}
+.a h1,.a h2,.a h3,.a h4{font-family:Fredoka,system-ui,sans-serif;font-weight:700;margin:0;line-height:1.05}
+.b{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 28px;border-radius:999px;background:#FDC62B;color:#0d0d0d;font-weight:700;text-decoration:none;transition:filter 0.2s,transform 0.15s;border:none;cursor:pointer;font-family:Figtree,system-ui,sans-serif;font-size:16px}
+.b:hover{filter:brightness(1.1);transform:scale(1.02)}
 .o{background:none;color:#FDC62B;border:3px solid #FDC62B}
-.k{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:2px solid #FDC62B;color:#FDC62B;font-weight:700;text-decoration:none}
-.m{background:#1a1a1a;border:1px solid #2c2c2c;border-radius:28px;padding:22px 24px}
-.m h3{font-size:30px;color:#FDC62B;margin-bottom:6px}
+.o:hover{background:rgba(253,198,43,0.15);color:#FDC62B}
+.k{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:2px solid #FDC62B;color:#FDC62B;font-weight:700;text-decoration:none;transition:background 0.2s,color 0.2s,transform 0.15s;cursor:pointer;font-size:15px}
+.k:hover{background:#FDC62B;color:#0d0d0d;transform:translateY(-2px)}
+
+/* Botones de control */
+.btn-control{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 16px;border-radius:999px;border:1.5px solid #3a3a3a;background:#181818;color:#ddd;font-weight:700;font-size:14px;cursor:pointer;transition:all 0.2s;font-family:Figtree,system-ui,sans-serif}
+.btn-control:hover{border-color:#FDC62B;color:#FDC62B;background:#222}
+
+/* Nav Dropdown */
+.nav-dropdown{position:relative;display:inline-block}
+.nav-dropdown summary{list-style:none;cursor:pointer;user-select:none;outline:none}
+.nav-dropdown summary::-webkit-details-marker{display:none}
+.nav-dropdown-summary{min-height:44px;padding:0 20px;font-size:15px;display:inline-flex;align-items:center;gap:8px}
+.nav-dropdown-content{position:absolute;top:calc(100% + 10px);right:0;background:#161616;border:2px solid #FDC62B;border-radius:22px;padding:16px;min-width:300px;max-width:90vw;box-shadow:0 18px 48px rgba(0,0,0,0.9);z-index:1000;animation:dropFade 0.2s ease}
+@keyframes dropFade{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.nav-drop-title{font-family:Fredoka,system-ui,sans-serif;font-size:13px;color:#FDC62B;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #292929}
+.nav-drop-list{display:flex;flex-direction:column;gap:4px;max-height:320px;overflow-y:auto;padding-right:4px}
+.nav-drop-list::-webkit-scrollbar{width:5px}
+.nav-drop-list::-webkit-scrollbar-thumb{background:#333;border-radius:4px}
+.nav-drop-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;color:#eee;text-decoration:none;font-size:15px;font-weight:600;border-radius:10px;transition:background 0.15s,color 0.15s}
+.nav-drop-item:hover{background:rgba(253,198,43,0.16);color:#FDC62B}
+.nav-drop-divider{height:1px;background:#2a2a2a;margin:12px 0 10px}
+.nav-drop-btn-wa{display:flex;align-items:center;justify-content:center;background:#FDC62B;color:#0d0d0d;font-weight:700;font-size:14px;padding:10px 16px;border-radius:999px;text-decoration:none;transition:filter 0.15s}
+.nav-drop-btn-wa:hover{filter:brightness(1.1)}
+.nav-drop-extra{display:block;color:#999;font-size:13px;text-decoration:none;padding:4px 8px;text-align:center}
+.nav-drop-extra:hover{color:#FDC62B}
+
+/* Acordeón / Desplegables de la carta */
+details.m{background:#181818;border:1.5px solid #2a2a2a;border-radius:24px;padding:18px 22px;transition:border-color 0.2s ease,box-shadow 0.2s ease,background 0.2s ease;scroll-margin-top:24px}
+details.m[open]{border-color:#FDC62B;background:#191919;box-shadow:0 12px 32px rgba(0,0,0,0.5)}
+details.m summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;user-select:none;outline:none}
+details.m summary::-webkit-details-marker{display:none}
+details.m summary h3{font-size:26px;color:#FDC62B;margin:0;display:flex;align-items:center;gap:10px}
+.badge-count{font-family:Figtree,system-ui,sans-serif;font-size:12px;font-weight:700;background:#272727;color:#b5b5b5;border-radius:999px;padding:3px 10px;vertical-align:middle;letter-spacing:0.3px}
+details.m[open] .badge-count{background:rgba(253,198,43,0.18);color:#FDC62B}
+.chevron-icon{width:34px;height:34px;border-radius:50%;background:#252525;color:#FDC62B;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;transition:transform 0.25s cubic-bezier(0.4,0,0.2,1),background 0.2s ease,color 0.2s ease;flex-shrink:0}
+details.m[open] .chevron-icon{transform:rotate(180deg);background:#FDC62B;color:#0d0d0d}
+details.m:hover{border-color:#555}
+details.m[open]:hover{border-color:#FDC62B}
+details.m summary:hover h3{filter:brightness(1.1)}
+.m-body{margin-top:16px;padding-top:10px;border-top:1px dashed #2e2e2e;animation:mSlideDown 0.22s ease}
+@keyframes mSlideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.m h4{font-size:22px;color:#FDC62B;margin:22px 0 8px}
 .m ul{list-style:none;margin:0;padding:0}
-.m li{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:2px 10px;padding:10px 0;border-bottom:1px solid #2c2c2c}
+.m li{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:2px 10px;padding:10px 0;border-bottom:1px solid #282828}
 .m li:last-child{border:0}
 .m b{font-family:Fredoka,system-ui,sans-serif;font-size:19px}
 .m u{text-decoration:none;background:#FDC62B;color:#0d0d0d;border-radius:999px;padding:2px 12px;font-weight:700;font-size:15px}
 .m small{flex-basis:100%;color:#b5b5b5;font-size:14px;line-height:1.35}
 </style>
+<script>
+document.addEventListener('click', function(e) {
+  // Manejo de clics en enlaces con ancla (píldoras y menú desplegable)
+  var anchor = e.target.closest('a[href^="#"]');
+  if (anchor) {
+    var targetId = anchor.getAttribute('href').slice(1);
+    var targetEl = document.getElementById(targetId);
+    if (targetEl && targetEl.tagName.toLowerCase() === 'details') {
+      targetEl.open = true;
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    var navDrop = document.getElementById('navDropdownMenu');
+    if (navDrop && !navDrop.contains(anchor)) {
+      navDrop.removeAttribute('open');
+    }
+  }
+  // Botón desplegar todo
+  if (e.target.closest('#btnExpandAll')) {
+    document.querySelectorAll('section#carta details.m').forEach(function(d) { d.open = true; });
+  }
+  // Botón plegar todo
+  if (e.target.closest('#btnCollapseAll')) {
+    document.querySelectorAll('section#carta details.m').forEach(function(d) { d.open = false; });
+  }
+  // Cerrar menú de navegación al hacer clic afuera
+  var navDropdown = document.getElementById('navDropdownMenu');
+  if (navDropdown && navDropdown.hasAttribute('open') && !navDropdown.contains(e.target)) {
+    navDropdown.removeAttribute('open');
+  }
+});
+</script>
 </helmet>
 <div class="a">
-<nav class="w" style="display:flex;justify-content:space-between;align-items:center;padding-top:20px;padding-bottom:20px"><img src="./assets/f3c8aa2cc32fa701da67b433ffea2d6d.svg" alt="Osly Me encanta" style="height:52px"><a class="b o" href="#carta">Ver la carta</a></nav>
+<nav class="w" style="display:flex;justify-content:space-between;align-items:center;padding-top:20px;padding-bottom:20px;position:relative;z-index:100">
+  <a href="#" style="display:inline-flex"><img src="./assets/f3c8aa2cc32fa701da67b433ffea2d6d.svg" alt="Osly Me encanta" style="height:52px"></a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <!-- Menú desplegable de navegación -->
+    <details class="nav-dropdown" id="navDropdownMenu">
+      <summary class="b o nav-dropdown-summary">
+        <span>Menú ▾</span>
+      </summary>
+      <div class="nav-dropdown-content">
+        <div class="nav-drop-title">Categorías de la carta</div>
+        <div class="nav-drop-list">
+          <a class="nav-drop-item" href="#hamburguesas">🍔 Hamburguesas <span class="badge-count">12</span></a>
+          <a class="nav-drop-item" href="#perros">🌭 Perros calientes <span class="badge-count">8</span></a>
+          <a class="nav-drop-item" href="#salchipapas">🍟 Salchipapas <span class="badge-count">9</span></a>
+          <a class="nav-drop-item" href="#mazorcas">🌽 Mazorcas <span class="badge-count">4</span></a>
+          <a class="nav-drop-item" href="#reventones">💥 Reventones <span class="badge-count">4</span></a>
+          <a class="nav-drop-item" href="#especiales">🥩 Especiales <span class="badge-count">6</span></a>
+          <a class="nav-drop-item" href="#sandwiches">🥪 Sandwiches <span class="badge-count">7</span></a>
+          <a class="nav-drop-item" href="#picadas">🍖 Picadas <span class="badge-count">4</span></a>
+          <a class="nav-drop-item" href="#infantil">🧸 Menú infantil <span class="badge-count">3</span></a>
+          <a class="nav-drop-item" href="#frutas">🍧 Frutas y helados <span class="badge-count">7</span></a>
+          <a class="nav-drop-item" href="#bebidas">🥤 Bebidas y Frappes <span class="badge-count">8</span></a>
+        </div>
+        <div class="nav-drop-divider"></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <a class="nav-drop-extra" href="#info">📍 Cra. 9 #4-31, La Jagua de Ibirico</a>
+          <a class="nav-drop-btn-wa" href="https://wa.me/573127848305?text=Hola%20Osly%2C%20quiero%20hacer%20un%20pedido">💬 Pedir por WhatsApp</a>
+        </div>
+      </div>
+    </details>
+    <a class="b" href="#carta" style="min-height:44px;padding:0 22px">Ver carta</a>
+  </div>
+</nav>
+
 <header class="w" style="padding-top:40px;padding-bottom:64px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px;align-items:center">
 <div><h1 style="font-size:clamp(52px,8vw,92px)">¡Comida rápida <span style="color:#FDC62B">que te encanta!</span></h1>
 <p style="font-size:20px;color:#b5b5b5;max-width:460px;margin:20px 0 28px">Hamburguesas, perros, salchipapas y más, hechos al momento. Pide por WhatsApp o pasa por el local.</p>
 <a class="b" href="https://wa.me/573127848305?text=Hola%20Osly%2C%20quiero%20hacer%20un%20pedido">Pedir por WhatsApp</a></div>
 <div style="background:#141414;border:2px solid #FDC62B;border-radius:44px;padding:48px;transform:rotate(-3deg);display:flex;justify-content:center"><img src="./assets/f3c8aa2cc32fa701da67b433ffea2d6d.svg" alt="" style="width:100%;max-width:340px"></div>
 </header>
+
 <section id="carta" class="w" style="padding-bottom:64px">
-<h2 style="font-size:48px;color:#FDC62B;margin-bottom:16px">La carta</h2>
-<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px"><a class="k" href="#hamburguesas">Hamburguesas</a><a class="k" href="#perros">Perros</a><a class="k" href="#salchipapas">Salchipapas</a><a class="k" href="#mazorcas">Mazorcas</a><a class="k" href="#reventones">Reventones</a><a class="k" href="#especiales">Especiales</a><a class="k" href="#sandwiches">Sandwiches</a><a class="k" href="#picadas">Picadas</a><a class="k" href="#infantil">Menú infantil</a><a class="k" href="#frutas">Frutas y helados</a><a class="k" href="#bebidas">Bebidas</a></div>
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:16px">
+  <h2 style="font-size:48px;color:#FDC62B;margin:0">La carta</h2>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <button type="button" id="btnExpandAll" class="btn-control">▼ Desplegar todo</button>
+    <button type="button" id="btnCollapseAll" class="btn-control">▲ Plegar todo</button>
+  </div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px">
+  <a class="k" href="#hamburguesas">Hamburguesas</a>
+  <a class="k" href="#perros">Perros</a>
+  <a class="k" href="#salchipapas">Salchipapas</a>
+  <a class="k" href="#mazorcas">Mazorcas</a>
+  <a class="k" href="#reventones">Reventones</a>
+  <a class="k" href="#especiales">Especiales</a>
+  <a class="k" href="#sandwiches">Sandwiches</a>
+  <a class="k" href="#picadas">Picadas</a>
+  <a class="k" href="#infantil">Menú infantil</a>
+  <a class="k" href="#frutas">Frutas y helados</a>
+  <a class="k" href="#bebidas">Bebidas</a>
+</div>
+
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;align-items:start">
 
-<div class="m" id="hamburguesas"><h3>Hamburguesas</h3><ul>
-<li><b>Sencilla</b><u>$20.000</u><small>150 gr de carne de la casa, pan brioche de papa, tomate, quesillo, cebolla, lechuga, salsas.</small></li>
-<li><b>Combo</b><u>$24.000</u><small>150 gr de carne de la casa, pan brioche de papa, cebolla, lechuga, tomate, porción de papa, 1 gaseosa 250 ml Postobón.</small></li>
-<li><b>Americana</b><u>$28.000</u><small>Carne ranchera de Zenú, pan brioche de papa, cebolla sofrita en BBQ, lechuga, tomate, papa ripio, quesillo, tocineta, cerverony, porción de papa.</small></li>
-<li><b>Chicken</b><u>$20.000</u><small>Pechuga asada, pan brioche de papa, cebolla, lechuga, tomate, quesillo, salsa piña y mostaza, porción de papa.</small></li>
-<li><b>Maxi</b><u>$28.500</u><small>150 gr de carne de la casa, pollo, pan brioche de papa, cebolla sofrita, lechuga, tomate, papa ripio, quesillo, jamón, huevos de codorniz, cerverony, porción de papa.</small></li>
-<li><b>Sabanera</b><u>$28.000</u><small>130 gr de carne de la casa, pan brioche de papa, tocineta caramelizada, queso cheddar, cascos de papa en sal de orégano.</small></li>
-<li><b>Costeña</b><u>$25.500</u><small>150 gr de carne de la casa, pan brioche de papa, queso costeño, platanito verde, suero, porción de papa.</small></li>
-<li><b>Presley</b><u>$28.600</u><small>150 gr de carne de la casa, pan brioche de papa, lechuga, cebolla, tomate, huevo frito, quesillo, tocineta, salsa chipotle, porción de papa.</small></li>
-<li><b>Argentina</b><u>$27.500</u><small>150 gr de carne de la casa, pan brioche de papa, chorizo, queso cheddar, pepinillos, chimichurri, lechuga, tomate, porción de papa.</small></li>
-<li><b>Doble Carne</b><u>$30.000</u><small>300 gr de carne de la casa, pan brioche de papa, cebolla, lechuga, tomate, quesillo, porción de papa.</small></li>
-<li><b>★ Santandereana</b><u>$26.000</u><small>130 gr de carne de res, pan de papa, cebolla caramelizada en ron, lechuga, tomate, arepa, queso mozarela, pollo desmechado, piña en almíbar, salsa tártara santandereana de la casa, papa casquitos.</small></li>
-<li><b>★ La Fazenda criolla del autor</b><u>$28.000</u><small>Pan de papa, 130 gr 100% carne de res de la casa, cebolla, lechuga, tomate, pollo desmechado, chicharrón la fazenda, salsa del autor de la casa, queso cheddar y cascos de papa.</small></li>
-</ul></div>
+<details class="m" id="hamburguesas" open>
+  <summary>
+    <h3>Hamburguesas <span class="badge-count">12 opciones</span></h3>
+    <span class="chevron-icon">▼</span>
+  </summary>
+  <div class="m-body">
+    <ul>
+      <li><b>Sencilla</b><u>$20.000</u><small>150 gr de carne de la casa, pan brioche de papa, tomate, quesillo, cebolla, lechuga, salsas.</small></li>
+      <li><b>Combo</b><u>$24.000</u><small>150 gr de carne de la casa, pan brioche de papa, cebolla, lechuga, tomate, porción de papa, 1 gaseosa 250 ml Postobón.</small></li>
+      <li><b>Americana</b><u>$28.000</u><small>Carne ranchera de Zenú, pan brioche de papa, cebolla sofrita en BBQ, lechuga, tomate, papa ripio, quesillo, tocineta, cerverony, porción de papa.</small></li>
+      <li><b>Chicken</b><u>$20.000</u><small>Pechuga asada, pan brioche de papa, cebolla, lechuga, tomate, quesillo, salsa piña y mostaza, porción de papa.</small></li>
+      <li><b>Maxi</b><u>$28.500</u><small>150 gr de carne de la casa, pollo, pan brioche de papa, cebolla sofrita, lechuga, tomate, papa ripio, quesillo, jamón, huevos de codorniz, cerverony, porción de papa.</small></li>
+      <li><b>Sabanera</b><u>$28.000</u><small>130 gr de carne de la casa, pan brioche de papa, tocineta caramelizada, queso cheddar, cascos de papa en sal de orégano.</small></li>
+      <li><b>Costeña</b><u>$25.500</u><small>150 gr de carne de la casa, pan brioche de papa, queso costeño, platanito verde, suero, porción de papa.</small></li>
+      <li><b>Presley</b><u>$28.600</u><small>150 gr de carne de la casa, pan brioche de papa, lechuga, cebolla, tomate, huevo frito, quesillo, tocineta, salsa chipotle, porción de papa.</small></li>
+      <li><b>Argentina</b><u>$27.500</u><small>150 gr de carne de la casa, pan brioche de papa, chorizo, queso cheddar, pepinillos, chimichurri, lechuga, tomate, porción de papa.</small></li>
+      <li><b>Doble Carne</b><u>$30.000</u><small>300 gr de carne de la casa, pan brioche de papa, cebolla, lechuga, tomate, quesillo, porción de papa.</small></li>
+      <li><b>★ Santandereana</b><u>$26.000</u><small>130 gr de carne de res, pan de papa, cebolla caramelizada en ron, lechuga, tomate, arepa, queso mozarela, pollo desmechado, piña en almíbar, salsa tártara santandereana de la casa, papa casquitos.</small></li>
+      <li><b>★ La Fazenda criolla del autor</b><u>$28.000</u><small>Pan de papa, 130 gr 100% carne de res de la casa, cebolla, lechuga, tomate, pollo desmechado, chicharrón la fazenda, salsa del autor de la casa, queso cheddar y cascos de papa.</small></li>
+    </ul>
+  </div>
+</details>
 
-<div class="m" id="perros"><h3>Perros</h3><ul>
-<li><b>Sencillo</b><u>$15.000</u><small>Pan brioche, salchicha de cerdo, papa ripio, cebolla, quesillo.</small></li>
-<li><b>Americano</b><u>$21.500</u><small>Pan brioche, cebolla, salchicha Super Ranchera, papa ripio, tocineta, quesillo, porción de papa.</small></li>
-<li><b>Maxi</b><u>$20.000</u><small>Pan brioche, cebolla, salchicha de cerdo, papa ripio, pollo, jamón, quesillo, huevos de codorniz, porción de papa.</small></li>
-<li><b>Ranchero</b><u>$18.000</u><small>Pan brioche, cebolla, salchicha ranchera, papa ripio, quesillo, porción de papas.</small></li>
-<li><b>Choripán</b><u>$20.000</u><small>Pan brioche, cebolla, chorizo parrillero, quesillo, chimichurri, porción de papas.</small></li>
-<li><b>Suizo</b><u>$24.000</u><small>Pan brioche, salchicha suiza, chimichurri, papa ripio, cebolla, salsas, quesillo, porción de papa.</small></li>
-</ul>
-<h3 style="margin-top:20px">Perros callejeros</h3><ul>
-<li><b>Hawaiano</b><u>$13.500</u><small>Pan clásico, salchicha long Zenú, cebolla, papa ripio, queso mozzarela, piña caramelizada, trocitos de tocineta crocante, salsa tártara santandereana de la casa.</small></li>
-<li><b>The Long Crunch Club</b><u>$13.500</u><small>Pan clásico, salchicha long Zenú, cebolla, papa ripio, queso mozzarela, pepinillos 100% caseros, tocineta crocante, salsa tártara santandereana.</small></li>
-</ul></div>
+<details class="m" id="perros">
+  <summary>
+    <h3>Perros <span class="badge-count">8 opciones</span></h3>
+    <span class="chevron-icon">▼</span>
+  </summary>
+  <div class="m-body">
+    <ul>
+      <li><b>Sencillo</b><u>$15.000</u><small>Pan brioche, salchicha de cerdo, papa ripio, cebolla, quesillo.</small></li>
+      <li><b>Americano</b><u>$21.500</u><small>Pan brioche, cebolla, salchicha Super Ranchera, papa ripio, tocineta, quesillo, porción de papa.</small></li>
+      <li><b>Maxi</b><u>$20.000</u><small>Pan brioche, cebolla, salchicha de cerdo, papa ripio, pollo, jamón, quesillo, huevos de codorniz, porción de papa.</small></li>
+      <li><b>Ranchero</b><u>$18.000</u><small>Pan brioche, cebolla, salchicha ranchera, papa ripio, quesillo, porción de papas.</small></li>
+      <li><b>Choripán</b><u>$20.000</u><small>Pan brioche, cebolla, chorizo parrillero, quesillo, chimichurri, porción de papas.</small></li>
+      <li><b>Suizo</b><u>$24.000</u><small>Pan brioche, salchicha suiza, chimichurri, papa ripio, cebolla, salsas, quesillo, porción de papa.</small></li>
+    </ul>
+    <h4>Perros callejeros</h4>
+    <ul>
+      <li><b>Hawaiano</b><u>$13.500</u><small>Pan clásico, salchicha long Zenú, cebolla, papa ripio, queso mozzarela, piña caramelizada, trocitos de tocineta crocante, salsa tártara santandereana de la casa.</small></li>
+      <li><b>The Long Crunch Club</b><u>$13.500</u><small>Pan clásico, salchicha long Zenú, cebolla, papa ripio, queso mozzarela, pepinillos 100% caseros, tocineta crocante, salsa tártara santandereana.</small></li>
+    </ul>
+  </div>
+</details>
 
-<div class="m" id="salchipapas"><h3>Salchipapas</h3><ul>
-<li><b>Salchi Niño</b><u>$8.000</u><small>Papa, salchicha, queso.</small></li>
-<li><b>Sencilla</b><u>$15.500</u><small>Papa, salchicha, lechuga, queso.</small></li>
-<li><b>Sencilla especial</b><u>$22.000</u><small>Papa, salchicha, lechuga, chorizo, jamón, queso.</small></li>
-<li><b>Choripapa</b><u>$25.000</u><small>Papa, chorizo parrillero, lechuga, queso, pollo, butifarra.</small></li>
-<li><b>Especial</b><u>$26.000</u><small>Papa, salchicha, lechuga, queso, pollo desmechado, huevo de codorniz, cerverony.</small></li>
-<li><b>Ranchera</b><u>$28.000</u><small>Papa, salchicha ranchera bañada en salsa BBQ, con especias de canela, lechuga, queso.</small></li>
-<li><b>Mega</b><u>$37.000</u><small>Papa, salchicha, lechuga, queso, salsas. Para 3 personas.</small></li>
-<li><b>Trifásica</b><u>$43.000</u><small>360 gr de carne, pechuga, cerdo, salchicha, jamón, cebolla, queso, lechuga, salsa de ajo.</small></li>
-<li><b>B/quillera</b><u>$42.500</u><small>Papa, 200 gm de carne y pechuga, pimentón, salchicha tipo americana, chorizo, cebolla, queso costeño, butifarra, lechuga, quesillo doble crema fundido.</small></li>
-</ul></div>
+<details class="m" id="salchipapas">
+  <summary>
+    <h3>Salchipapas <span class="badge-count">9 opciones</span></h3>
+    <span class="chevron-icon">▼</span>
+  </summary>
+  <div class="m-body">
+    <ul>
+      <li><b>Salchi Niño</b><u>$8.000</u><small>Papa, salchicha, queso.</small></li>
+      <li><b>Sencilla</b><u>$15.500</u><small>Papa, salchicha, lechuga, queso.</small></li>
+      <li><b>Sencilla especial</b><u>$22.000</u><small>Papa, salchicha, lechuga, chorizo, jamón, queso.</small></li>
+      <li><b>Choripapa</b><u>$25.000</u><small>Papa, chorizo parrillero, lechuga, queso, pollo, butifarra.</small></li>
+      <li><b>Especial</b><u>$26.000</u><small>Papa, salchicha, lechuga, queso, pollo desmechado, huevo de codorniz, cerverony.</small></li>
+      <li><b>Ranchera</b><u>$28.000</u><small>Papa, salchicha ranchera bañada en salsa BBQ, con especias de canela, lechuga, queso.</small></li>
+      <li><b>Mega</b><u>$37.000</u><small>Papa, salchicha, lechuga, queso, salsas. Para 3 personas.</small></li>
+      <li><b>Trifásica</b><u>$43.000</u><small>360 gr de carne, pechuga, cerdo, salchicha, jamón, cebolla, queso, lechuga, salsa de ajo.</small></li>
+      <li><b>B/quillera</b><u>$42.500</u><small>Papa, 200 gm de carne y pechuga, pimentón, salchicha tipo americana, chorizo, cebolla, queso costeño, butifarra, lechuga, quesillo doble crema fundido.</small></li>
+    </ul>
+  </div>
+</details>
 
-<div class="m" id="mazorcas"><h3>Mazorcas</h3><ul>
-<li><b>Sencilla</b><u>$19.500</u><small>Pollo, chorizo, quesillo, maíz tierno.</small></li>
-<li><b>Chula</b><u>$20.000</u><small>Pollo, butifarra, jamón, cebolla, quesillo, maíz tierno, salsa de ajo.</small></li>
-<li><b>Tazmania</b><u>$24.500</u><small>Carne a la plancha, salchicha ranchera, quesillo, maíz tierno.</small></li>
-<li><b>Pechugona</b><u>$33.500</u><small>Papa, pechuga en trozos, salchicha ranchera, huevos de codorniz, quesillo, maíz tierno.</small></li>
-</ul></div>
+<details class="m" id="mazorcas">
+  <summary>
+    <h3>Mazorcas <span class="badge-count">4 opciones</span></h3>
+    <span class="chevron-icon">▼</span>
+  </summary>
+  <div class="m-body">
+    <ul>
+      <li><b>Sencilla</b><u>$19.500</u><small>Pollo, chorizo, quesillo, maíz tierno.</small></li>
+      <li><b>Chula</b><u>$20.000</u><small>Pollo, butifarra, jamón, cebolla, quesillo, maíz tierno, salsa de ajo.</small></li>
+      <li><b>Tazmania</b><u>$24.500</u><small>Carne a la plancha, salchicha ranchera, quesillo, maíz tierno.</small></li>
+      <li><b>Pechugona</b><u>$33.500</u><small>Papa, pechuga en trozos, salchicha ranchera, huevos de codorniz, quesillo, maíz tierno.</small></li>
+    </ul>
+  </div>
+</details>
 
-<div class="m" id="reventones"><h3>Reventones</h3><ul>
-<li><b>Sencillo</b><u>$23.000</u><small>Papa, lechuga, cebolla, salchicha, chorizo, butifarra, salchicha ranchera, queso.</small></li>
-<li><b>Mediano</b><u>$32.000</u><small>Papa, lechuga, cebolla, salchicha, chorizo, butifarra, carne de hamburguesa, pollo, queso.</small></li>
-<li><b>Súper</b><u>$38.500</u><small>Papa, lechuga, cebolla, salchicha, chorizo, butifarra, carne de hamburguesa, salami, queso. Para 2 personas.</small></li>
-<li><b>Mega</b><u>$55.000</u><small>Papa, lechuga, cebolla, salchicha, chorizo, butifarra, carne de hamburguesa, salami, queso, pollo desmechado. Para 3 personas.</small></li>
-</ul></div>
+<details class="m" id="reventones">
+  <summary>
+    <h3>Reventones <span class="badge-count">4 opciones</span></h3>
+    <span class="chevron-icon">▼</span>
+  </summary>
+  <div class="m-body">
+    <ul>
+      <li><b>Sencillo</b><u>$23.000</u><small>Papa, lechuga, cebolla, salchicha, chorizo, butifarra, salchicha ranchera, queso.</small></li>
+      <li><b>Mediano</b><u>$32.000</u><small>Papa, lechuga, cebolla, salchicha, chorizo, butifarra, carne de hamburguesa, pollo, queso.</small></li>
+      <li><b>Súper</b><u>$38.500</u><small>Papa, lechuga, cebolla, salchicha, chorizo, butifarra, carne de hamburguesa, salami, queso. Para 2 personas.</small></li>
+      <li><b>Mega</b><u>$55.000</u><small>Papa, lechuga, cebolla, salchicha, chorizo, butifarra, carne de hamburguesa, salami, queso, pollo desmechado. Para 3 personas.</small></li>
+    </ul>
+  </div>
+</details>
 
-<div class="m" id="especiales"><h3>Especiales</h3><ul>
-<li><b>Pechuga asada</b><u>$20.000</u><small>Pechuga asada (250 grs), ensalada, papas francesas 200 gr.</small></li>
-<li><b>Pechuga gratinada</b><u>$26.000</u><small>Pechuga asada (250 grs) bañada en queso, ensalada, 200 grs de papas francesas.</small></li>
-<li><b>Pechuga mera mera</b><u>$27.000</u><small>Pechuga 250 grs en salsa de champiñones, 200 grs de papas francesas.</small></li>
-<li><b>Burritos Mexicanos</b><u>$27.000</u><small>Carne de res, pollo, cerdo, pimentón, porción de papa. Ensalada.</small></li>
-<li><b>Lomo asado</b><u>$29.000</u><small>Lomo de res, ensalada y papas francesas.</small></li>
-<li><b>Beef de Lomo</b><u>$33.000</u><small>Lomo 250 gr fino en salsa de champiñones, papa a la francesa (200 grs) y ensalada.</small></li>
-</ul></div>
+<details class="m" id="especiales">
+  <summary>
+    <h3>Especiales <span class="badge-count">6 opciones</span></h3>
+    <span class="chevron-icon">▼</span>
+  </summary>
+  <div class="m-body">
+    <ul>
+      <li><b>Pechuga asada</b><u>$20.000</u><small>Pechuga asada (250 grs), ensalada, papas francesas 200 gr.</small></li>
+      <li><b>Pechuga gratinada</b><u>$26.000</u><small>Pechuga asada (250 grs) bañada en queso, ensalada, 200 grs de papas francesas.</small></li>
+      <li><b>Pechuga mera mera</b><u>$27.000</u><small>Pechuga 250 grs en salsa de champiñones, 200 grs de papas francesas.</small></li>
+      <li><b>Burritos Mexicanos</b><u>$27.000</u><small>Carne de res, pollo, cerdo, pimentón, porción de papa. Ensalada.</small></li>
+      <li><b>Lomo asado</b><u>$29.000</u><small>Lomo de res, ensalada y papas francesas.</small></li>
+      <li><b>Beef de Lomo</b><u>$33.000</u><small>Lomo 250 gr fino en salsa de champiñones, papa a la francesa (200 grs) y ensalada.</small></li>
+    </ul>
+  </div>
+</details>
 
-<div class="m" id="sandwiches"><h3>Sandwiches</h3><ul>
-<li><b>Sencillo</b><u>$8.000</u><small>Pan, jamón, quesillo, salsa.</small></li>
-<li><b>Ejecutivo</b><u>$9.500</u><small>Pan, lechuga, jamón, pollo, quesillo.</small></li>
-<li><b>Osly</b><u>$13.000</u><small>Pan, doble quesillo, salchicha ranchera, jamón (malla de queso dorado).</small></li>
-<li><b>★ Sandwich 4 esquinas</b><u>$14.800</u><small>Pan 4 esquinas de finas hierbas, 100 gm de pollo desmechado, doble quesillo mozzarela, lechuga, queso crema.</small></li>
-<li><b>Tazmania</b><u>$16.000</u><small>3 panes, lechuga, jamón, quesillo, carne a la plancha, salchicha ranchera.</small></li>
-<li><b>Especial</b><u>$16.500</u><small>4 panes, jamón, quesillo, pollo, huevo de codorniz (malla de queso dorado).</small></li>
-<li><b>Urbano</b><u>$20.000</u><small>Cebolla sofrita, lechuga, tomate, jamón, pollo, tocineta, salami, porción de papas.</small></li>
-</ul></div>
+<details class="m" id="sandwiches">
+  <summary>
+    <h3>Sandwiches <span class="badge-count">7 opciones</span></h3>
+    <span class="chevron-icon">▼</span>
+  </summary>
+  <div class="m-body">
+    <ul>
+      <li><b>Sencillo</b><u>$8.000</u><small>Pan, jamón, quesillo, salsa.</small></li>
+      <li><b>Ejecutivo</b><u>$9.500</u><small>Pan, lechuga, jamón, pollo, quesillo.</small></li>
+      <li><b>Osly</b><u>$13.000</u><small>Pan, doble quesillo, salchicha ranchera, jamón (malla de queso dorado).</small></li>
+      <li><b>★ Sandwich 4 esquinas</b><u>$14.800</u><small>Pan 4 esquinas de finas hierbas, 100 gm de pollo desmechado, doble quesillo mozzarela, lechuga, queso crema.</small></li>
+      <li><b>Tazmania</b><u>$16.000</u><small>3 panes, lechuga, jamón, quesillo, carne a la plancha, salchicha ranchera.</small></li>
+      <li><b>Especial</b><u>$16.500</u><small>4 panes, jamón, quesillo, pollo, huevo de codorniz (malla de queso dorado).</small></li>
+      <li><b>Urbano</b><u>$20.000</u><small>Cebolla sofrita, lechuga, tomate, jamón, pollo, tocineta, salami, porción de papas.</small></li>
+    </ul>
+  </div>
+</details>
 
-<div class="m" id="picadas"><h3>Picadas</h3><ul>
-<li><b>5 Carnes</b><u>$27.500</u><small>Carne a la plancha, pechuga a la plancha, salchicha ranchera, chorizo, butifarra, lechuga, tomate, porción de papa.</small></li>
-<li><b>BBQ</b><u>$28.000</u><small>Lomo de cerdo (240 grs), salchicha suiza, salchicha ranchera, lechuga, cebolla, tomate, porción de papa.</small></li>
-<li><b>Mexicana</b><u>$30.000</u><small>Carne, pechuga, cerdo (240 grs), maíz tierno, salchicha ranchera, chorizo, quesillo, ensalada, porción de papa.</small></li>
-<li><b>Criolla</b><u>$42.000</u><small>300 gr en carnes, pechuga, cerdo, chorizo, morcilla, butifarra, patacón, papa criolla, cascos de papa, suero, salsa chipotle, chimichurri. Para 2 personas.</small></li>
-</ul></div>
+<details class="m" id="picadas">
+  <summary>
+    <h3>Picadas <span class="badge-count">4 opciones</span></h3>
+    <span class="chevron-icon">▼</span>
+  </summary>
+  <div class="m-body">
+    <ul>
+      <li><b>5 Carnes</b><u>$27.500</u><small>Carne a la plancha, pechuga a la plancha, salchicha ranchera, chorizo, butifarra, lechuga, tomate, porción de papa.</small></li>
+      <li><b>BBQ</b><u>$28.000</u><small>Lomo de cerdo (240 grs), salchicha suiza, salchicha ranchera, lechuga, cebolla, tomate, porción de papa.</small></li>
+      <li><b>Mexicana</b><u>$30.000</u><small>Carne, pechuga, cerdo (240 grs), maíz tierno, salchicha ranchera, chorizo, quesillo, ensalada, porción de papa.</small></li>
+      <li><b>Criolla</b><u>$42.000</u><small>300 gr en carnes, pechuga, cerdo, chorizo, morcilla, butifarra, patacón, papa criolla, cascos de papa, suero, salsa chipotle, chimichurri. Para 2 personas.</small></li>
+    </ul>
+  </div>
+</details>
 
-<div class="m" id="infantil"><h3>Menú infantil</h3><ul>
-<li><b>Hamburguesa infantil</b><u>$16.000</u><small>Pan brioche, 60 gr de carne de res, queso cheddar, lechuga, tomate, papa a la francesa, salsa de la casa, jugo cajita, juguete.</small></li>
-<li><b>Perro infantil</b><u>$15.000</u><small>Pan, salchicha ranchera, papa ripio, quesillo, papa a la francesa, salsas, jugo cajita, juguete.</small></li>
-<li><b>Salchi infantil</b><u>$15.000</u><small>Papa a la francesa, salchicha ranchera, queso costeño, piña caramelizada, salsa santandereana, jugo cajita, juguete.</small></li>
-</ul></div>
+<details class="m" id="infantil">
+  <summary>
+    <h3>Menú infantil <span class="badge-count">3 opciones</span></h3>
+    <span class="chevron-icon">▼</span>
+  </summary>
+  <div class="m-body">
+    <ul>
+      <li><b>Hamburguesa infantil</b><u>$16.000</u><small>Pan brioche, 60 gr de carne de res, queso cheddar, lechuga, tomate, papa a la francesa, salsa de la casa, jugo cajita, juguete.</small></li>
+      <li><b>Perro infantil</b><u>$15.000</u><small>Pan, salchicha ranchera, papa ripio, quesillo, papa a la francesa, salsas, jugo cajita, juguete.</small></li>
+      <li><b>Salchi infantil</b><u>$15.000</u><small>Papa a la francesa, salchicha ranchera, queso costeño, piña caramelizada, salsa santandereana, jugo cajita, juguete.</small></li>
+    </ul>
+  </div>
+</details>
 
-<div class="m" id="frutas"><h3>Ensaladas de frutas</h3><ul>
-<li><b>Sencilla</b><u>$18.000</u><small>Manzana verde, patilla, banano, papaya, pera, uva, crema de leche, queso, 1 helado.</small></li>
-<li><b>Especial</b><u>$23.000</u><small>Manzana verde, patilla, banano, papaya, pera, uva, manzana roja, melón, fresa, galleta, crema de leche, queso, 2 helados.</small></li>
-<li><b>Súper</b><u>$28.000</u><small>Manzana verde, patilla, banano, papaya, pera, uva, manzana roja, melón, fresa, kiwi, uchuva, durazno, barquillos, crema de leche, queso, 3 helados.</small></li>
-<li><b>Fresas con crema</b><u>$15.000</u></li>
-</ul>
-<h3 style="margin-top:20px">Helados</h3><ul>
-<li><b>Helado cono</b><u>$6.000</u></li>
-<li><b>Helado vaso</b><u>$10.000</u></li>
-<li><b>Helado bola</b><u>$6.500</u><small>Con leche condensada y galleta.</small></li>
-</ul></div>
+<details class="m" id="frutas">
+  <summary>
+    <h3>Frutas y helados <span class="badge-count">7 opciones</span></h3>
+    <span class="chevron-icon">▼</span>
+  </summary>
+  <div class="m-body">
+    <h4>Ensaladas de frutas</h4>
+    <ul>
+      <li><b>Sencilla</b><u>$18.000</u><small>Manzana verde, patilla, banano, papaya, pera, uva, crema de leche, queso, 1 helado.</small></li>
+      <li><b>Especial</b><u>$23.000</u><small>Manzana verde, patilla, banano, papaya, pera, uva, manzana roja, melón, fresa, galleta, crema de leche, queso, 2 helados.</small></li>
+      <li><b>Súper</b><u>$28.000</u><small>Manzana verde, patilla, banano, papaya, pera, uva, manzana roja, melón, fresa, kiwi, uchuva, durazno, barquillos, crema de leche, queso, 3 helados.</small></li>
+      <li><b>Fresas con crema</b><u>$15.000</u></li>
+    </ul>
+    <h4>Helados</h4>
+    <ul>
+      <li><b>Helado cono</b><u>$6.000</u></li>
+      <li><b>Helado vaso</b><u>$10.000</u></li>
+      <li><b>Helado bola</b><u>$6.500</u><small>Con leche condensada y galleta.</small></li>
+    </ul>
+  </div>
+</details>
 
-<div class="m" id="bebidas"><h3>Frappes y limonadas</h3><ul>
-<li><b>Limonada de coco</b><u>$14.000</u></li>
-<li><b>Frappes</b><u>16 oz / litro</u><small>El precio varía según el sabor. Mandarina, guanábana, banano/milo, limonada, mora, lulo, maracuyá, fresa, níspero, banano, limonada cerezada, fusión tamarindo, zapote, tomate de árbol, milo, pimacuyá.</small></li>
-<li><b>Tropical</b><u>Frappe</u><small>Guanábana con fresa, manzana con fresa, piña con fresa, limonada, mandarina.</small></li>
-</ul>
-<h3 style="margin-top:20px">Sodas italianas</h3><ul>
-<li><b>Frutos Rojos</b><u>$17.000</u><small>Fresa, manzana roja y arándanos, con zumo de limón, hielo en cubos y sirope dulce. Decorada con cerezas, perlas explosivas y hojas de menta, con bebida Hatsu y borde escarchado.</small></li>
-<li><b>Frutos Amarillos</b><u>$17.000</u><small>Piña en almíbar y maracuyá, con zumo de limón y hielo en cubos. Decorada con rodajas de naranja tangelo, tiras de mango y perlas explosivas, con bebida Hatsu.</small></li>
-<li><b>Frutos Verdes</b><u>$17.000</u><small>Kiwi, uva verde, manzana verde y mango biche, con zumo de limón y hielo en cubos. Decorada con perlas explosivas y borde escarchado, con bebida Hatsu.</small></li>
-<li><b>Fruto de Lichi</b><u>$17.000</u><small>Lichi con zumo de limón, Hatsu y hielo en cubos. Decorada con arándanos, sirope dulce y borde escarchado.</small></li>
-<li><b>Sandía</b><u>$19.000</u><small>Sandía con zumo de limón, Hatsu y hielo en cubos. Decorada con paleta de sandía, chamoy, romero y borde escarchado. Puedes pedirla de Bretaña.</small></li>
-</ul></div>
+<details class="m" id="bebidas">
+  <summary>
+    <h3>Bebidas y Frappes <span class="badge-count">8 opciones</span></h3>
+    <span class="chevron-icon">▼</span>
+  </summary>
+  <div class="m-body">
+    <h4>Frappes y limonadas</h4>
+    <ul>
+      <li><b>Limonada de coco</b><u>$14.000</u></li>
+      <li><b>Frappes</b><u>16 oz / litro</u><small>El precio varía según el sabor. Mandarina, guanábana, banano/milo, limonada, mora, lulo, maracuyá, fresa, níspero, banano, limonada cerezada, fusión tamarindo, zapote, tomate de árbol, milo, pimacuyá.</small></li>
+      <li><b>Tropical</b><u>Frappe</u><small>Guanábana con fresa, manzana con fresa, piña con fresa, limonada, mandarina.</small></li>
+    </ul>
+    <h4>Sodas italianas</h4>
+    <ul>
+      <li><b>Frutos Rojos</b><u>$17.000</u><small>Fresa, manzana roja y arándanos, con zumo de limón, hielo en cubos y sirope dulce. Decorada con cerezas, perlas explosivas y hojas de menta, con bebida Hatsu y borde escarchado.</small></li>
+      <li><b>Frutos Amarillos</b><u>$17.000</u><small>Piña en almíbar y maracuyá, con zumo de limón y hielo en cubos. Decorada con rodajas de naranja tangelo, tiras de mango y perlas explosivas, con bebida Hatsu.</small></li>
+      <li><b>Frutos Verdes</b><u>$17.000</u><small>Kiwi, uva verde, manzana verde y mango biche, con zumo de limón y hielo en cubos. Decorada con perlas explosivas y borde escarchado, con bebida Hatsu.</small></li>
+      <li><b>Fruto de Lichi</b><u>$17.000</u><small>Lichi con zumo de limón, Hatsu y hielo en cubos. Decorada con arándanos, sirope dulce y borde escarchado.</small></li>
+      <li><b>Sandía</b><u>$19.000</u><small>Sandía con zumo de limón, Hatsu y hielo en cubos. Decorada con paleta de sandía, chamoy, romero y borde escarchado. Puedes pedirla de Bretaña.</small></li>
+    </ul>
+  </div>
+</details>
 
 </div></section>
-<footer style="background:#141414;border-top:1px solid #2c2c2c;color:#b5b5b5;padding:36px 0"><div class="w" style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center"><div>Cra. 9 #4-31, La Jagua de Ibirico, Cesar<br>Todos los días, 4:30 p. m. a 11 p. m. (por confirmar)<br>WhatsApp 312 784 8305</div><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="b" href="https://wa.me/573127848305?text=Hola%20Osly%2C%20quiero%20hacer%20un%20pedido">Pedir por WhatsApp</a><a class="b o" href="https://www.google.com/maps/search/?api=1&amp;query=Cra.+9+%234-31+La+Jagua+de+Ibirico+Cesar">Abrir en Google Maps</a><a class="b o" href="https://www.instagram.com/oslymeencanta">@oslymeencanta</a></div></div></footer>
+
+<footer id="info" style="background:#141414;border-top:1px solid #2c2c2c;color:#b5b5b5;padding:36px 0">
+  <div class="w" style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center">
+    <div>Cra. 9 #4-31, La Jagua de Ibirico, Cesar<br>Todos los días, 4:30 p. m. a 11 p. m. (por confirmar)<br>WhatsApp 312 784 8305</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a class="b" href="https://wa.me/573127848305?text=Hola%20Osly%2C%20quiero%20hacer%20un%20pedido">Pedir por WhatsApp</a>
+      <a class="b o" href="https://www.google.com/maps/search/?api=1&amp;query=Cra.+9+%234-31+La+Jagua+de+Ibirico+Cesar">Abrir en Google Maps</a>
+      <a class="b o" href="https://www.instagram.com/oslymeencanta">@oslymeencanta</a>
+    </div>
+  </div>
+</footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":3600}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2000}}'>
 class Component extends DCLogic {
 renderVals() { return {}; }
 }
+</script>
+<script>
+// Respaldo de interactividad fuera de x-dc
+document.addEventListener('click', function(e) {
+  var anchor = e.target.closest('a[href^="#"]');
+  if (anchor) {
+    var targetId = anchor.getAttribute('href').slice(1);
+    var targetEl = document.getElementById(targetId);
+    if (targetEl && targetEl.tagName.toLowerCase() === 'details') {
+      targetEl.open = true;
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    var navDrop = document.getElementById('navDropdownMenu');
+    if (navDrop && !navDrop.contains(anchor)) {
+      navDrop.removeAttribute('open');
+    }
+  }
+  if (e.target.closest('#btnExpandAll')) {
+    document.querySelectorAll('section#carta details.m').forEach(function(d) { d.open = true; });
+  }
+  if (e.target.closest('#btnCollapseAll')) {
+    document.querySelectorAll('section#carta details.m').forEach(function(d) { d.open = false; });
+  }
+  var navDropdown = document.getElementById('navDropdownMenu');
+  if (navDropdown && navDropdown.hasAttribute('open') && !navDropdown.contains(e.target)) {
+    navDropdown.removeAttribute('open');
+  }
+});
 </script>
 </body>
 </html>
