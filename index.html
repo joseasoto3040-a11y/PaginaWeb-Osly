@@ -42,6 +42,10 @@
       </div>
     </details>
     <a class="b btn-nav" href="#carta">Ver carta</a>
+    <button type="button" class="nav-cart-btn" id="btnNavCart" aria-label="Ver carrito de compras">
+      <span class="nav-cart-icon">🛒</span>
+      <span class="nav-cart-badge" id="navCartBadge">0</span>
+    </button>
   </div>
 </nav>
 
@@ -955,40 +959,161 @@
 </footer>
 </div>
 
-<!-- Modal para Ordenar Plato -->
-<div id="orderModal" class="order-modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+<!-- ========================================== -->
+<!-- 1. MODAL: PERSONALIZAR Y AÑADIR AL CARRITO -->
+<!-- ========================================== -->
+<div id="customDishModal" class="order-modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="customDishModalTitle">
   <div class="order-modal">
     <!-- Encabezado del modal -->
     <div class="order-modal-header">
-      <div class="order-modal-badge">Personaliza tu pedido</div>
-      <button type="button" class="order-modal-close" id="btnCloseOrderModal" aria-label="Cerrar modal">&times;</button>
+      <div class="order-modal-badge">Personaliza tu plato</div>
+      <button type="button" class="order-modal-close" id="btnCloseCustomDishModal" aria-label="Cerrar modal">&times;</button>
     </div>
 
     <!-- Contenido con scroll -->
     <div class="order-modal-scroll">
       <!-- Tarjeta resumen del plato -->
       <div class="order-dish-preview">
-        <div class="order-dish-img-wrap" id="orderDishImgWrap">
-          <img id="orderDishImg" src="" alt="Plato seleccionado" style="display:none;">
-          <span id="orderDishImgPlaceholder" class="order-dish-placeholder">🍽️</span>
+        <div class="order-dish-img-wrap" id="customDishImgWrap">
+          <img id="customDishImg" src="" alt="Plato seleccionado" style="display:none;">
+          <span id="customDishImgPlaceholder" class="order-dish-placeholder">🍽️</span>
         </div>
         <div class="order-dish-details">
-          <span class="order-dish-category" id="orderDishCategory">Categoría</span>
-          <h3 class="order-dish-title" id="orderModalTitle">Nombre del plato</h3>
+          <span class="order-dish-category" id="customDishCategory">Categoría</span>
+          <h3 class="order-dish-title" id="customDishModalTitle">Nombre del plato</h3>
+          <p class="order-dish-desc" id="customDishDesc"></p>
           <div class="order-dish-price-row">
-            <span class="order-dish-price" id="orderDishPrice">$0</span>
+            <span class="order-dish-price" id="customDishPrice">$0</span>
             <!-- Selector de cantidad -->
             <div class="order-qty-control">
-              <button type="button" class="order-qty-btn" id="btnQtyMinus" aria-label="Disminuir cantidad">−</button>
-              <span class="order-qty-val" id="orderQtyVal">1</span>
-              <button type="button" class="order-qty-btn" id="btnQtyPlus" aria-label="Aumentar cantidad">+</button>
+              <button type="button" class="order-qty-btn" id="btnCustomQtyMinus" aria-label="Disminuir cantidad">−</button>
+              <span class="order-qty-val" id="customQtyVal">1</span>
+              <button type="button" class="order-qty-btn" id="btnCustomQtyPlus" aria-label="Aumentar cantidad">+</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Formulario de pedido -->
-      <form id="orderForm" class="order-form" novalidate>
+      <form id="customDishForm" novalidate>
+        <!-- Preferencia de salsas -->
+        <div class="form-group" id="sauceGroup">
+          <label class="form-label">
+            <span class="form-label-icon">🥣</span>
+            ¿Deseas la salsa aparte? <span class="req">*</span>
+          </label>
+          <div class="sauce-options">
+            <label class="sauce-card is-selected">
+              <input type="radio" name="customSauceOption" value="salsa_aparte" checked>
+              <div class="card-content-inner">
+                <span class="card-icon">🥣</span>
+                <div class="card-text">
+                  <strong>Salsa aparte</strong>
+                  <small>En vasitos</small>
+                </div>
+              </div>
+            </label>
+            <label class="sauce-card">
+              <input type="radio" name="customSauceOption" value="salsa_en_plato">
+              <div class="card-content-inner">
+                <span class="card-icon">🍔</span>
+                <div class="card-text">
+                  <strong>En el plato</strong>
+                  <small>Tradicional</small>
+                </div>
+              </div>
+            </label>
+            <label class="sauce-card">
+              <input type="radio" name="customSauceOption" value="sin_salsa">
+              <div class="card-content-inner">
+                <span class="card-icon">🚫</span>
+                <div class="card-text">
+                  <strong>Sin salsas</strong>
+                  <small>Sin salsas</small>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Ingredientes a agregar o quitar -->
+        <div class="form-group">
+          <label for="customIngredients" class="form-label">
+            <span class="form-label-icon">🥓</span>
+            ¿Qué ingrediente quieres agregar o quitar? <small class="opt">(opcional)</small>
+          </label>
+          <textarea 
+            id="customIngredients" 
+            name="ingredients" 
+            rows="2" 
+            class="form-control" 
+            placeholder="Ej: Sin cebolla, agregar tocineta, carne bien asada, sin ripio, etc."
+          ></textarea>
+        </div>
+
+        <!-- Resumen de precio de este artículo -->
+        <div class="order-summary-footer">
+          <div class="order-total-block">
+            <span class="order-total-label">Subtotal de este plato:</span>
+            <span class="order-total-amount" id="customDishSubtotal">$0</span>
+          </div>
+        </div>
+
+        <!-- Acciones del modal -->
+        <div class="order-modal-actions">
+          <button type="button" class="btn-cancel" id="btnCancelCustomDish">Cancelar</button>
+          <button type="submit" class="btn-add-to-cart" id="btnAddToCart">
+            <span class="btn-icon">🛒</span>
+            <span id="btnAddToCartText">Añadir al pedido</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 2. MODAL: CARRITO Y CHECKOUT UNIFICADO -->
+<!-- ========================================== -->
+<div id="cartModal" class="order-modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="cartModalTitle">
+  <div class="order-modal cart-modal-container">
+    <!-- Encabezado del carrito -->
+    <div class="order-modal-header">
+      <div class="order-modal-badge">
+        <span>🛒 Tu Pedido</span>
+        <span class="cart-header-count" id="cartHeaderCount">0</span>
+      </div>
+      <button type="button" class="order-modal-close" id="btnCloseCartModal" aria-label="Cerrar carrito">&times;</button>
+    </div>
+
+    <!-- Contenido con scroll -->
+    <div class="order-modal-scroll" id="cartModalScroll">
+      <!-- Lista de artículos en el carrito -->
+      <div class="cart-section-title">
+        <span>Platos y bebidas seleccionados</span>
+        <button type="button" class="btn-clear-cart" id="btnClearCart" title="Vaciar carrito">Vaciar</button>
+      </div>
+
+      <div id="cartItemsList" class="cart-items-list">
+        <!-- Renderizado dinámico vía JavaScript -->
+      </div>
+
+      <!-- Accesos directos para agregar bebidas u otros acompañamientos -->
+      <div class="cart-quick-adds">
+        <span class="cart-quick-label">¿Deseas añadir algo más a tu pedido?</span>
+        <div class="cart-quick-chips">
+          <a href="#bebidas" class="cart-chip-link" id="cartAddDrinksLink">🥤 Bebidas y Frappes</a>
+          <a href="#frutas" class="cart-chip-link" id="cartAddDessertsLink">🍧 Frutas y Helados</a>
+          <a href="#carta" class="cart-chip-link" id="cartAddMoreLink">➕ Ver toda la Carta</a>
+        </div>
+      </div>
+
+      <!-- Formulario de entrega, cliente y pago -->
+      <form id="cartCheckoutForm" class="order-form" novalidate>
+        <div class="cart-section-divider"></div>
+        <div class="cart-section-title">
+          <span>Datos para la entrega</span>
+        </div>
+
         <!-- 1. Tipo de entrega -->
         <div class="form-group">
           <label class="form-label">
@@ -996,18 +1121,18 @@
             ¿Cómo deseas recibir tu pedido? <span class="req">*</span>
           </label>
           <div class="delivery-options">
-            <label class="delivery-card is-selected" id="cardDeliveryDomicilio">
-              <input type="radio" name="deliveryType" value="domicilio" checked>
+            <label class="delivery-card is-selected" id="cartCardDeliveryDomicilio">
+              <input type="radio" name="cartDeliveryType" value="domicilio" checked>
               <div class="card-content-inner">
                 <span class="card-icon">🛵</span>
                 <div class="card-text">
                   <strong>Envío a domicilio</strong>
-                  <small>Llega directo a tu puerta</small>
+                  <small>Te lo llevamos a tu casa</small>
                 </div>
               </div>
             </label>
-            <label class="delivery-card" id="cardDeliveryRecoger">
-              <input type="radio" name="deliveryType" value="recoger">
+            <label class="delivery-card" id="cartCardDeliveryRecoger">
+              <input type="radio" name="cartDeliveryType" value="recoger">
               <div class="card-content-inner">
                 <span class="card-icon">🛍️</span>
                 <div class="card-text">
@@ -1019,15 +1144,15 @@
           </div>
         </div>
 
-        <!-- 2. Dirección de entrega (condicional si es a domicilio) -->
-        <div class="form-group delivery-address-group" id="deliveryAddressGroup">
-          <label for="orderAddress" class="form-label">
+        <!-- 2. Dirección de entrega (condicional para domicilio) -->
+        <div class="form-group delivery-address-group" id="cartDeliveryAddressGroup">
+          <label for="cartAddress" class="form-label">
             <span class="form-label-icon">📍</span>
             Dirección de entrega <span class="req">*</span>
           </label>
           <input 
             type="text" 
-            id="orderAddress" 
+            id="cartAddress" 
             name="address" 
             class="form-control" 
             placeholder="Ej: Cra. 12 # 4-50, Barrio Centro (o indicaciones)" 
@@ -1039,13 +1164,13 @@
         <!-- 3. Datos del cliente (Nombre y Teléfono) -->
         <div class="form-group-row">
           <div class="form-group">
-            <label for="orderCustomerName" class="form-label">
+            <label for="cartCustomerName" class="form-label">
               <span class="form-label-icon">👤</span>
               Tu nombre <span class="req">*</span>
             </label>
             <input 
               type="text" 
-              id="orderCustomerName" 
+              id="cartCustomerName" 
               name="customerName" 
               class="form-control" 
               placeholder="Ej: Carlos Gómez" 
@@ -1054,13 +1179,13 @@
             >
           </div>
           <div class="form-group">
-            <label for="orderCustomerPhone" class="form-label">
+            <label for="cartCustomerPhone" class="form-label">
               <span class="form-label-icon">📞</span>
               Teléfono <small class="opt">(opcional)</small>
             </label>
             <input 
               type="tel" 
-              id="orderCustomerPhone" 
+              id="cartCustomerPhone" 
               name="customerPhone" 
               class="form-control" 
               placeholder="Ej: 312 000 0000" 
@@ -1076,8 +1201,8 @@
             Método de pago <span class="req">*</span>
           </label>
           <div class="payment-options">
-            <label class="payment-card is-selected" id="cardPaymentEfectivo">
-              <input type="radio" name="paymentMethod" value="efectivo" checked>
+            <label class="payment-card is-selected" id="cartCardPaymentEfectivo">
+              <input type="radio" name="cartPaymentMethod" value="efectivo" checked>
               <div class="card-content-inner">
                 <span class="card-icon">💵</span>
                 <div class="card-text">
@@ -1086,8 +1211,8 @@
                 </div>
               </div>
             </label>
-            <label class="payment-card" id="cardPaymentTransferencia">
-              <input type="radio" name="paymentMethod" value="transferencia">
+            <label class="payment-card" id="cartCardPaymentTransferencia">
+              <input type="radio" name="cartPaymentMethod" value="transferencia">
               <div class="card-content-inner">
                 <span class="card-icon">📲</span>
                 <div class="card-text">
@@ -1098,20 +1223,20 @@
             </label>
           </div>
 
-          <!-- Si es Efectivo: ¿Con cuánto paga? -->
-          <div class="payment-extra-box" id="paymentEfectivoBox">
-            <label for="orderCashAmount" class="form-sublabel">¿Con cuánto vas a pagar? <small class="opt">(opcional)</small></label>
+          <!-- Si es Efectivo: Con cuánto paga -->
+          <div class="payment-extra-box" id="cartPaymentEfectivoBox">
+            <label for="cartCashAmount" class="form-sublabel">¿Con cuánto vas a pagar? <small class="opt">(opcional)</small></label>
             <input 
               type="text" 
-              id="orderCashAmount" 
+              id="cartCashAmount" 
               name="cashAmount" 
               class="form-control form-control-sm" 
               placeholder="Ej: $50.000 (para llevarte el cambio exacto)"
             >
           </div>
 
-          <!-- Si es Transferencia: Mensaje informativo y app/banco -->
-          <div class="payment-extra-box" id="paymentTransferenciaBox" style="display: none;">
+          <!-- Si es Transferencia: Cuentas y app -->
+          <div class="payment-extra-box" id="cartPaymentTransferenciaBox" style="display: none;">
             <div class="transfer-info-banner">
               <span class="transfer-icon">💡</span>
               <div>
@@ -1119,8 +1244,8 @@
                 <p>Al enviar el pedido a WhatsApp te confirmaremos los números de cuenta (Nequi / Bancolombia) para tu transferencia.</p>
               </div>
             </div>
-            <label for="orderTransferApp" class="form-sublabel">¿Desde qué app o banco vas a transferir? <small class="opt">(opcional)</small></label>
-            <select id="orderTransferApp" name="transferApp" class="form-control form-control-sm">
+            <label for="cartTransferApp" class="form-sublabel">¿Desde qué app o banco vas a transferir? <small class="opt">(opcional)</small></label>
+            <select id="cartTransferApp" name="transferApp" class="form-control form-control-sm">
               <option value="Por definir">Seleccionar app / banco...</option>
               <option value="Nequi">Nequi</option>
               <option value="Bancolombia">Bancolombia</option>
@@ -1130,98 +1255,89 @@
           </div>
         </div>
 
-        <!-- 5. Ingredientes a agregar o quitar -->
+        <!-- 5. Notas generales del pedido -->
         <div class="form-group">
-          <label for="orderIngredients" class="form-label">
-            <span class="form-label-icon">🥓</span>
-            ¿Qué ingrediente quieres agregar o quitar? <small class="opt">(opcional)</small>
+          <label for="cartOrderNotes" class="form-label">
+            <span class="form-label-icon">📝</span>
+            Notas o comentarios del pedido <small class="opt">(opcional)</small>
           </label>
           <textarea 
-            id="orderIngredients" 
-            name="ingredients" 
+            id="cartOrderNotes" 
+            name="orderNotes" 
             rows="2" 
             class="form-control" 
-            placeholder="Ej: Sin cebolla, agregar tocineta, carne bien asada, sin ripio, etc."
+            placeholder="Ej: Por favor enviar servilletas extras, timbrar al llegar, etc."
           ></textarea>
         </div>
 
-        <!-- 6. Salsa aparte -->
-        <div class="form-group">
-          <label class="form-label">
-            <span class="form-label-icon">🥣</span>
-            ¿Deseas la salsa aparte? <span class="req">*</span>
-          </label>
-          <div class="sauce-options">
-            <label class="sauce-card is-selected">
-              <input type="radio" name="sauceOption" value="salsa_aparte" checked>
-              <div class="card-content-inner">
-                <span class="card-icon">🥣</span>
-                <div class="card-text">
-                  <strong>Salsa aparte</strong>
-                  <small>En vasitos</small>
-                </div>
-              </div>
-            </label>
-            <label class="sauce-card">
-              <input type="radio" name="sauceOption" value="salsa_en_plato">
-              <div class="card-content-inner">
-                <span class="card-icon">🍔</span>
-                <div class="card-text">
-                  <strong>En el plato</strong>
-                  <small>Tradicional</small>
-                </div>
-              </div>
-            </label>
-            <label class="sauce-card">
-              <input type="radio" name="sauceOption" value="sin_salsa">
-              <div class="card-content-inner">
-                <span class="card-icon">🚫</span>
-                <div class="card-text">
-                  <strong>Sin salsas</strong>
-                  <small>Sin salsas</small>
-                </div>
-              </div>
-            </label>
-          </div>
-        </div>
-
-        <!-- Resumen de total estimado -->
+        <!-- Resumen del total general -->
         <div class="order-summary-footer">
           <div class="order-total-block">
-            <span class="order-total-label">Subtotal estimado:</span>
-            <span class="order-total-amount" id="orderTotalAmount">$0</span>
+            <span class="order-total-label">Total estimado del pedido:</span>
+            <span class="order-total-amount" id="cartTotalAmount">$0</span>
           </div>
           <p class="order-disclaimer">* Los costos de domicilio o adiciones extras se confirmarán por WhatsApp.</p>
         </div>
 
         <!-- Mensaje de error / validación -->
-        <div id="orderFormError" class="order-form-error" style="display: none;" role="alert"></div>
+        <div id="cartFormError" class="order-form-error" style="display: none;" role="alert"></div>
 
         <!-- Acciones del modal -->
         <div class="order-modal-actions">
-          <button type="button" class="btn-cancel" id="btnCancelOrder">Cancelar</button>
-          <button type="submit" class="btn-submit-order" id="btnSubmitOrder">
+          <button type="button" class="btn-cancel" id="btnContinueShopping">Seguir eligiendo</button>
+          <button type="submit" class="btn-submit-order" id="btnSubmitCartOrder">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.392-12.416c-5.522 0-10 4.477-10 10 0 1.777.468 3.447 1.285 4.896l-1.365 4.988 5.12-1.343c1.405.772 3.013 1.219 4.72 1.219 5.522 0 10-4.477 10-10s-4.478-10-10-10z"/>
             </svg>
-            Pedir por WhatsApp
+            <span id="btnSubmitCartText">Pedir todo por WhatsApp</span>
           </button>
         </div>
       </form>
 
       <!-- Pantalla de confirmación tras enviar -->
-      <div id="orderSuccessScreen" class="order-success-screen" style="display: none;">
+      <div id="cartSuccessScreen" class="order-success-screen" style="display: none;">
         <div class="order-success-icon">🚀</div>
-        <h4>¡Pedido generado!</h4>
-        <p>Te hemos redirigido a WhatsApp para confirmar tu pedido con el restaurante.</p>
-        <p>Si la ventana no se abrió automáticamente, haz clic en el botón de abajo:</p>
-        <a id="orderWaDirectLink" href="#" target="_blank" rel="noopener" class="btn-submit-order" style="text-decoration:none; display:inline-flex;">
+        <h4>¡Pedido enviado con éxito!</h4>
+        <p>Te hemos redirigido a WhatsApp para confirmar los detalles de tu pedido con el restaurante.</p>
+        <p>Si la ventana no se abrió automáticamente, presiona el botón de abajo:</p>
+        <a id="cartWaDirectLink" href="#" target="_blank" rel="noopener" class="btn-submit-order" style="text-decoration:none; display:inline-flex; width:auto;">
           Abrir WhatsApp
         </a>
       </div>
     </div>
   </div>
 </div>
+
+<!-- ========================================== -->
+<!-- 3. BARRA FLOTANTE DEL CARRITO -->
+<!-- ========================================== -->
+<div id="floatingCartBar" class="floating-cart-bar" style="display: none;">
+  <div class="floating-cart-inner" id="floatingCartTrigger">
+    <div class="floating-cart-left">
+      <div class="floating-cart-badge-wrap">
+        <span class="floating-cart-icon">🛒</span>
+        <span class="floating-cart-badge" id="floatingCartCount">0</span>
+      </div>
+      <div class="floating-cart-info">
+        <span class="floating-cart-title">Tu pedido</span>
+        <span class="floating-cart-total" id="floatingCartTotal">$0</span>
+      </div>
+    </div>
+    <div class="floating-cart-right">
+      <span class="floating-cart-cta">Ver pedido</span>
+      <span class="floating-cart-arrow">➔</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 4. TOAST DE CONFIRMACIÓN AL AGREGAR -->
+<!-- ========================================== -->
+<div id="cartToast" class="cart-toast" role="status" aria-live="polite">
+  <span class="cart-toast-icon">✅</span>
+  <span class="cart-toast-msg" id="cartToastMsg">¡Plato añadido al pedido!</span>
+</div>
+
 
 <script src="js/main.js" defer></script>
 </body>
