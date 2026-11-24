@@ -93,7 +93,7 @@ details.m summary:hover h3 { filter: brightness(1.1); }
 .footer { background: #141414; border-top: 1px solid #2c2c2c; color: #b5b5b5; padding: 36px 0; }
 .footer-inner { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: center; }
 .footer-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-@media (max-width: 400px) { .carta-grid { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .carta-grid { grid-template-columns: 1fr; } }
 
 /* Botón Ordenar en cada plato */
 .item-actions {
@@ -691,17 +691,152 @@ textarea.form-control {
   margin-bottom: 16px;
 }
 
-/* Responsividad en móviles */
+/* ==========================================
+   OPTIMIZACIONES Y RESPONSIVIDAD PARA CELULAR
+   ========================================== */
+@media (max-width: 600px) {
+  /* Evitar zoom automático en Safari iOS al enfocar campos de texto */
+  .form-control,
+  .form-control-sm,
+  select.form-control {
+    font-size: 16px;
+  }
+}
+
 @media (max-width: 560px) {
+  /* Contenedor general */
+  .w {
+    padding: 0 16px;
+  }
+
+  /* Barra de navegación */
+  .nav {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .nav-logo img {
+    height: 42px;
+  }
+  .btn-nav {
+    min-height: 38px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+  .nav-dropdown-summary {
+    min-height: 38px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+  .nav-dropdown-content {
+    max-width: calc(100vw - 32px);
+    right: -10px;
+  }
+
+  /* Sección Hero */
+  .hero {
+    padding-top: 24px;
+    padding-bottom: 40px;
+    gap: 28px;
+  }
+  .hero h1 {
+    font-size: clamp(38px, 11vw, 56px);
+  }
+  .hero-text {
+    font-size: 16px;
+    margin: 14px 0 20px;
+  }
+  .hero-card {
+    padding: 24px;
+    border-radius: 28px;
+  }
+
+  /* Carta */
+  .carta-head h2 {
+    font-size: 36px;
+  }
+  details.m {
+    padding: 14px 16px;
+    border-radius: 18px;
+  }
+  details.m summary h3 {
+    font-size: 20px;
+  }
+  .badge-count {
+    font-size: 11px;
+    padding: 2px 8px;
+  }
+  .item-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 14px;
+  }
+  .m b {
+    font-size: 17px;
+  }
+  .m u {
+    font-size: 13px;
+    padding: 2px 10px;
+  }
+  .btn-ordenar {
+    min-height: 36px;
+    padding: 6px 16px;
+    font-size: 13px;
+  }
+
+  /* Footer */
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .footer-actions {
+    width: 100%;
+  }
+  .footer-actions .b {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Modal de pedido en formato Bottom-Sheet móvil */
   .order-modal-backdrop {
     padding: 0;
     align-items: flex-end;
   }
   .order-modal {
     max-width: 100%;
-    max-height: 88vh;
+    max-height: 90vh;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    transform: translateY(100%);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .order-modal-backdrop.is-active .order-modal {
+    transform: translateY(0);
+  }
+
+  /* Pestaña visual superior del modal */
+  .order-modal-header {
+    position: relative;
+    padding-top: 20px;
+  }
+  .order-modal-header::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 42px;
+    height: 4px;
+    background: #333;
+    border-radius: 999px;
+  }
+
+  .order-modal-scroll {
+    padding: 16px;
   }
   .form-group-row {
     grid-template-columns: 1fr;
@@ -717,5 +852,13 @@ textarea.form-control {
   .sauce-card .card-content-inner {
     flex-direction: row;
     text-align: left;
+    gap: 10px;
+  }
+  .order-modal-actions {
+    padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+  .btn-submit-order {
+    font-size: 14px;
+    min-height: 44px;
   }
 }
